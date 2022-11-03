@@ -1,9 +1,9 @@
-﻿using Telegram.Bot.Exceptions;
+﻿using Telegram.Bot;
+using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
-using Telegram.Bot.Types;
-using Telegram.Bot;
 
 var botClient = new TelegramBotClient("5522766988:AAEK8OThHKWoDc7A7ZBMFson5XjhMy__XDM");
 
@@ -31,47 +31,40 @@ cts.Cancel();
 
 async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
 {
-	// Only process Message updates: https://core.telegram.org/bots/api#message
-	if (update != null)
+	var housingKeyboard = new InlineKeyboardMarkup(new[]
+					{
+                        // first row
+                        new []
+						{
+							InlineKeyboardButton.WithCallbackData("Мелик-Карамова", "MK"),
+							InlineKeyboardButton.WithCallbackData("Рабочая 43", "R43"),
+						},
+                        // second row
+                        new []
+						{
+							InlineKeyboardButton.WithCallbackData("Крылова.д 41/1", "Krilova"),
+							InlineKeyboardButton.WithCallbackData("50 ЛетВЛКСМ", "50let"),
+						}
+					});
+
+
+	if (update.Type == UpdateType.Message)
 	{
-		if (update.Message is not { } message)
-			return;
-		// Only process text messages
-		if (message.Text is not { } messageText)
-			return;
-
-
-		var chatId = message.Chat.Id;
-
-		Console.WriteLine($"Received a '{messageText}' message in chat {chatId} {message.ReplyMarkup}");
-
-
-
-		InlineKeyboardMarkup inlineKeyboard = new(new[]
-			{
-        // first row
-        new []
+		Message message = update.Message;
+		if (message.Text.ToLower().StartsWith("/start"))
 		{
-			InlineKeyboardButton.WithCallbackData(text: "1.1", callbackData: "11"),
-			InlineKeyboardButton.WithCallbackData(text: "1.2", callbackData: "12"),
-		},
-        // second row
-        new []
-		{
-			InlineKeyboardButton.WithCallbackData(text: "2.1", callbackData: "21"),
-			InlineKeyboardButton.WithCallbackData(text: "2.2", callbackData: "22"),
-		},
-	});
-
-		Message sentMessage = await botClient.SendTextMessageAsync(
-			chatId: chatId,
-			text: "You said:\n" + messageText,
-			 replyMarkup: inlineKeyboard,
-			cancellationToken: cancellationToken);
+			await botClient.SendTextMessageAsync(message.Chat.Id, "Этот бот создан для создания запросов в Техническую службу. \nВыбирете ваш корпус", replyMarkup: housingKeyboard);
+		}
 	}
 
-
+	if (update.Type == UpdateType.CallbackQuery)
+	{
+		CallbackQuery callbackQuery = update.CallbackQuery;
+		Console.WriteLine($"Received a  {callbackQuery.Data}");
+	}
 }
+
+
 
 Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
 {
