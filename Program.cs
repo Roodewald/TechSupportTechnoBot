@@ -1,9 +1,9 @@
-﻿using Telegram.Bot;
-using Telegram.Bot.Exceptions;
+﻿using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
-using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using Telegram.Bot.Types;
+using Telegram.Bot;
 
 var botClient = new TelegramBotClient("5522766988:AAEK8OThHKWoDc7A7ZBMFson5XjhMy__XDM");
 
@@ -70,7 +70,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 			cancellationToken: cancellationToken);
 	}
 
-	
+
 }
 
 Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
