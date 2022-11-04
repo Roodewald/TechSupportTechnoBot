@@ -88,12 +88,29 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 	}
 }
 
+//Выводит базу данных пользователя
 string UserData(long senderId)
 {
 	long ID = ChekID(senderId);
-	return $"Пользователь {dbase[ID,4]} в корпусе на {dbase[ID,1]}, в кабинете: {dbase[ID, 2]}, \nОставил сообщение:\n{dbase[ID, 3]}";
+	for (int i = 0; i < 5; i++)
+	{
+		if (dbase[ID, i] == null)
+		{
+			return $"Последняя команда ввела бота в состояние ошибки \nЗапуститте бота снова при помощи /Start ";
+		}
+	}
+	string createdUserData = $"Пользователь {dbase[ID, 4]} \nВ корпусе на {dbase[ID, 1]},\n в кабинете: {dbase[ID, 2]}, \nОставил сообщение:{dbase[ID, 3]}";
+	return createdUserData;
 }
-
+//Удаляет пользоваетля из базы данных
+void VipeUserData(long senderId)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		dbase[ChekID(senderId), i] = null;
+	}
+}
+//Проверяет наличие ID пользователя в базе данных
 int ChekID(long senderId)
 {
 	for (int i = 0; i < 200; i++)
@@ -111,7 +128,7 @@ int ChekID(long senderId)
 			return i;
 		}
 	}
-	return 0;
+	return 199;
 }
 
 Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
