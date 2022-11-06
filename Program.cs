@@ -115,11 +115,11 @@ namespace TechSupportTechnoBot
 				}
 			}
 
-			//Выводит базу данных пользователя
+			//Проверяет кореектность введеных данных
 			string UserData(long senderId)
 			{
 				long ID = ChekID(senderId);
-				for (int i = 0; i < 5; i++)
+				for (int i = 0; i < dbase.GetLength(1); i++)
 				{
 					if (dbase[ID, i] == null || dbase[ID, i].Length < 1)
 					{
@@ -128,29 +128,30 @@ namespace TechSupportTechnoBot
 					}
 				}
 				string createdUserData = $"Пользователь {dbase[ID, 4]} \nВ корпусе на {dbase[ID, 1]},\n в кабинете: {dbase[ID, 2]}, \nОставил сообщение:{dbase[ID, 3]}";
-				program.SendToSysAdmins(createdUserData);
+				//program.SendToSysAdmins(createdUserData);
 				googleHelper.CreateEntries(dbase[ID, 4], dbase[ID, 1], dbase[ID, 2], dbase[ID, 3], dbase[ID, 0]);
 				return createdUserData;
 			}
 			//Удаляет пользоваетля из базы данных
 			void VipeUserData(long senderId)
 			{
-				for (int i = 0; i < 5; i++)
+				var id = ChekID(senderId);
+				for (int i = 0; i < dbase.GetLength(1); i++)
 				{
-					dbase[ChekID(senderId), i] = null;
+					dbase[id, i] = null;
 				}
 			}
-			//Проверяет наличие ID пользователя в базе данных
+			//Выделяет ячейку памяти под ID пользователя. Или ищит ее
 			int ChekID(long senderId)
 			{
-				for (int i = 0; i < 200; i++)
+				for (int i = 0; i < dbase.GetLength(0); i++)
 				{
 					if (dbase[i, 0] == senderId.ToString())
 					{
 						return i;
 					}
 				}
-				for (int i = 0; i < 200; i++)
+				for (int i = 0; i < dbase.GetLength(0); i++)
 				{
 					if (dbase[i, 0] == null)
 					{
@@ -158,7 +159,7 @@ namespace TechSupportTechnoBot
 						return i;
 					}
 				}
-				return 199;
+				return dbase.GetLength(0)-1;
 			}
 
 			Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
