@@ -9,13 +9,22 @@ namespace TechSupportTechnoBot
 {
 	internal class Program
 	{
-		
+		public long[] sysAdmins = {
+			1517971517,// Рязанов Станислав Павлович
+			970587775, // Савченко Павел Петрович
+		};
+		TelegramBotClient botClient = new TelegramBotClient("5522766988:AAEK8OThHKWoDc7A7ZBMFson5XjhMy__XDM");
+
 		static async Task Main(string[] args)
 		{
 			GoogleHelper googleHelper = new GoogleHelper();
+			var program = new Program();
+			var botClient = program.botClient;
+
+
 
 			string[,] dbase = new string[200, 5];
-			var botClient = new TelegramBotClient("5522766988:AAEK8OThHKWoDc7A7ZBMFson5XjhMy__XDM");
+
 			using var cts = new CancellationTokenSource();
 			googleHelper.Run().Wait();
 
@@ -67,26 +76,33 @@ namespace TechSupportTechnoBot
 				{
 
 					Message message = update.Message;
-					if (message.Text.ToLower().StartsWith("/start"))
+
+					if (message.Text != null)
 					{
-						await botClient.SendTextMessageAsync(message.Chat.Id, "Этот бот создан для создания запросов в Техническую службу. \nВыберете ваш корпус", replyMarkup: housingKeyboard);
+						if (message.Text.ToLower().StartsWith("/start"))
+						{
+							await botClient.SendTextMessageAsync(message.Chat.Id, "Этот бот создан для создания запросов в Техническую службу. \nВыберете ваш корпус", replyMarkup: housingKeyboard);
+						}
+						if (message.Text.ToLower().StartsWith("/cab"))
+						{
+							dbase[ChekID(message.From.Id), 2] = message.Text.Remove(0, 4).TrimStart(' ');
+							await botClient.SendTextMessageAsync(message.Chat.Id, "Чем может помочь вам тех служба?\nДля отправки используйте команду/task\nПример:/task 5 компьютер не работает сеть");
+						}
+						if (message.Text.ToLower().StartsWith("/task"))
+						{
+							dbase[ChekID(message.From.Id), 3] = message.Text.Remove(0, 5).TrimStart(' ');
+							await botClient.SendTextMessageAsync(message.Chat.Id, "Как к Вам можно обращаться? \nДля отправки используйте команду/name\nПример:/name Павел Петрович ");
+						}
+						if (message.Text.ToLower().StartsWith("/name"))
+						{
+							dbase[ChekID(message.From.Id), 4] = message.Text.Remove(0, 5).TrimStart(' ');
+							await botClient.SendTextMessageAsync(message.Chat.Id, UserData(message.Chat.Id));
+							Console.WriteLine("Отправлен запрос");
+							VipeUserData(message.Chat.Id);
+						}
 					}
-					if (message.Text.ToLower().StartsWith("/cab"))
-					{
-						dbase[ChekID(message.From.Id), 2] = message.Text;
-						await botClient.SendTextMessageAsync(message.Chat.Id, "Чем может помочь вам тех служба?\nДля отправки используйте команду/task\nПример:/task 5 компьютер не работает сеть");
-					}
-					if (message.Text.ToLower().StartsWith("/task"))
-					{
-						dbase[ChekID(message.From.Id), 3] = message.Text;
-						await botClient.SendTextMessageAsync(message.Chat.Id, "Как к Вам можно обращаться? \nДля отправки используйте команду/name\nПример:/name Павел Петрович ");
-					}
-					if (message.Text.ToLower().StartsWith("/name"))
-					{
-						dbase[ChekID(message.From.Id), 4] = message.Text;
-						await botClient.SendTextMessageAsync(message.Chat.Id, UserData(message.Chat.Id));
-						Console.WriteLine("Отправлен запрос");
-					}
+					
+
 					return;
 				}
 
@@ -105,14 +121,14 @@ namespace TechSupportTechnoBot
 				long ID = ChekID(senderId);
 				for (int i = 0; i < 5; i++)
 				{
-					if (dbase[ID, i] == null)
+					if (dbase[ID, i] == null || dbase[ID, i].Length < 1)
 					{
-						return $"Последняя команда ввела бота в состояние ошибки \nЗапуститте бота снова при помощи /Start ";
+						return $"Бот получил от вас пустую строчку в оном из сообщений. Начните заново";
 						Console.WriteLine("Запрос откланен");
 					}
 				}
 				string createdUserData = $"Пользователь {dbase[ID, 4]} \nВ корпусе на {dbase[ID, 1]},\n в кабинете: {dbase[ID, 2]}, \nОставил сообщение:{dbase[ID, 3]}";
-				 
+				program.SendToSysAdmins(createdUserData);
 				googleHelper.CreateEntries(dbase[ID, 4], dbase[ID, 1], dbase[ID, 2], dbase[ID, 3], dbase[ID, 0]);
 				return createdUserData;
 			}
@@ -158,6 +174,17 @@ namespace TechSupportTechnoBot
 				return Task.CompletedTask;
 			}
 
+		}
+
+		async void SendToSysAdmins(string message)
+		{
+			var program = new Program();
+			var sysAdmins = program.sysAdmins;
+			var botClient = program.botClient;
+			foreach (var admin in sysAdmins)
+			{
+				await botClient.SendTextMessageAsync(admin, message);
+			}
 		}
 	}
 }

@@ -25,7 +25,7 @@ namespace TechSupportTechnoBot
 				credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
 					GoogleClientSecrets.Load(stream).Secrets,
 					new[] { SheetsService.Scope.Spreadsheets },
-					"user", CancellationToken.None);
+					"MainUser", CancellationToken.None);
 			}
 
 			// Create the service.
@@ -33,15 +33,17 @@ namespace TechSupportTechnoBot
 			{
 				HttpClientInitializer = credential,
 				ApplicationName = "TechSupportTechnoBot",
-			});		
+			});
+			Console.WriteLine($"GoogleHelper запущен. {credential.UserId}");
 		}
 		public void CreateEntries(string name, string building, string cab, string message,string ID)
 		{
 			
-			var range = $"{sheet}!A:E";
+			var range = $"{sheet}!A:G";
 			var valueRange = new ValueRange();
 
-			var objectList = new List<object>() { name,building,cab,message, ID};
+			var objectList = new List<object>() { name,building,cab,message, ID, DateTime.Now.ToString("dd/MM/yy HH:mm"), "Заявка приянта" };
+			Console.WriteLine($"Заявка {name} отправлена !");
 			valueRange.Values = new List<IList<object>> { objectList };
 
 			var appendRequest = service.Spreadsheets.Values.Append(valueRange, SpreadsheetId, range);
