@@ -1,45 +1,71 @@
 ﻿using Google.Apis.Auth.OAuth2;
-using Google.Apis.Sheets.v4;
 using Google.Apis.Services;
-using Google.Apis.Util.Store;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
 
 namespace TechSupportTechnoBot
 {
-	internal class GoogleClass
+	/// <summary>
+	/// Sample which demonstrates how to use the Books API.
+	/// https://developers.google.com/books/docs/v1/getting_started
+	/// <summary>
+	internal class GoogleHelper
 	{
-		public static SheetsService ConnectToGoogle()
+		static readonly string SpreadsheetId = "12WcDQ3_Gtxl18dK3Vfg83yEh2MleKjg8Jqq3facPNpo";
+		static readonly string sheet = "Tasks";
+		private SheetsService service;
+		[STAThread]
+			
+
+		public async Task Run()
 		{
-			// При изменении этих областей удалите ранее сохраненные учетные данные.
-			// в ~/.credentials/sheets.googleapis.com-dotnet-quickstart.json
-			string[] Scopes = { SheetsService.Scope.Spreadsheets };
-			string ApplicationName = "Excel to Google Sheet";
-
 			UserCredential credential;
-
-			using (var stream =
-				new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+			using (var stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read))
 			{
-				// Файл token.json хранит токены доступа и обновления пользователя и создается
-				// автоматически, когда поток авторизации завершается в первый раз.
-				string credPath = "token.json";
-				credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-					GoogleClientSecrets.FromStream(stream).Secrets,
-					Scopes,
-					"user",
-					CancellationToken.None,
-					new FileDataStore(credPath, true)).Result;
-				Console.WriteLine("Credential file saved to: " + credPath);
+				credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
+					GoogleClientSecrets.Load(stream).Secrets,
+					new[] { SheetsService.Scope.Spreadsheets },
+					"user", CancellationToken.None);
 			}
 
-			// Создать службу API Google Таблиц
-			var service = new SheetsService(new BaseClientService.Initializer()
+			// Create the service.
+			service = new SheetsService(new BaseClientService.Initializer()
 			{
 				HttpClientInitializer = credential,
-				ApplicationName = ApplicationName,
-			});
+				ApplicationName = "TechSupportTechnoBot",
+			});		
+		}
+		static void ReadEntries(SheetsService service)
+		{
 
-			return service;
+			var range = $"{sheet}!A1:F10";
+			var request = service.Spreadsheets.Values.Get(SpreadsheetId, range);
+
+			var response = request.Execute();
+			var values = response.Values;
+			if (values != null && values.Count > 0)
+			{
+				foreach (var row in values)
+				{
+					Console.WriteLine("{0} {1} | {2} | {3}", row[5], row[4], row[3], row[1]);
+				}
+			}
+			else Console.WriteLine("No data.");
+
+		}
+		public void CreateEntries(string name, string building, string cab, string message)
+		{
+			
+			var range = $"{sheet}!A:D";
+			var valueRange = new ValueRange();
+
+			var objectList = new List<object>() { name,building,cab,message };
+			valueRange.Values = new List<IList<object>> { objectList };
+
+			var appendRequest = service.Spreadsheets.Values.Append(valueRange, SpreadsheetId, range);
+			appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
+			var appendResponse = appendRequest.Execute();
+			
 		}
 	}
 }
-

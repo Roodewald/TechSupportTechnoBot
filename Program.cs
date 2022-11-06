@@ -1,5 +1,4 @@
-﻿using TechSupportTechnoBot;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
@@ -13,14 +12,13 @@ namespace TechSupportTechnoBot
 		
 		static async Task Main(string[] args)
 		{
-			GoogleClass googleClass = new GoogleClass();
-			
+			GoogleHelper googleHelper = new GoogleHelper();
 
 			string[,] dbase = new string[200, 5];
 			var botClient = new TelegramBotClient("5522766988:AAEK8OThHKWoDc7A7ZBMFson5XjhMy__XDM");
 			using var cts = new CancellationTokenSource();
-			
-			
+			googleHelper.Run().Wait();
+
 
 
 			// StartReceiving does not block the caller thread. Receiving is done on the ThreadPool.
@@ -87,7 +85,7 @@ namespace TechSupportTechnoBot
 					{
 						dbase[ChekID(message.From.Id), 4] = message.Text;
 						await botClient.SendTextMessageAsync(message.Chat.Id, UserData(message.Chat.Id));
-						Console.WriteLine(UserData(message.Chat.Id));
+						Console.WriteLine("Отправлен запрос");
 					}
 					return;
 				}
@@ -113,6 +111,7 @@ namespace TechSupportTechnoBot
 					}
 				}
 				string createdUserData = $"Пользователь {dbase[ID, 4]} \nВ корпусе на {dbase[ID, 1]},\n в кабинете: {dbase[ID, 2]}, \nОставил сообщение:{dbase[ID, 3]}";
+				googleHelper.CreateEntries(dbase[ID, 4], dbase[ID, 1], dbase[ID, 2], dbase[ID, 3]);
 				return createdUserData;
 			}
 			//Удаляет пользоваетля из базы данных
