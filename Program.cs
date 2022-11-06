@@ -108,10 +108,12 @@ namespace TechSupportTechnoBot
 					if (dbase[ID, i] == null)
 					{
 						return $"Последняя команда ввела бота в состояние ошибки \nЗапуститте бота снова при помощи /Start ";
+						Console.WriteLine("Запрос откланен");
 					}
 				}
 				string createdUserData = $"Пользователь {dbase[ID, 4]} \nВ корпусе на {dbase[ID, 1]},\n в кабинете: {dbase[ID, 2]}, \nОставил сообщение:{dbase[ID, 3]}";
-				googleHelper.CreateEntries(dbase[ID, 4], dbase[ID, 1], dbase[ID, 2], dbase[ID, 3]);
+				 
+				googleHelper.CreateEntries(dbase[ID, 4], dbase[ID, 1], dbase[ID, 2], dbase[ID, 3], dbase[ID, 0]);
 				return createdUserData;
 			}
 			//Удаляет пользоваетля из базы данных

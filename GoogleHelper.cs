@@ -35,31 +35,13 @@ namespace TechSupportTechnoBot
 				ApplicationName = "TechSupportTechnoBot",
 			});		
 		}
-		static void ReadEntries(SheetsService service)
-		{
-
-			var range = $"{sheet}!A1:F10";
-			var request = service.Spreadsheets.Values.Get(SpreadsheetId, range);
-
-			var response = request.Execute();
-			var values = response.Values;
-			if (values != null && values.Count > 0)
-			{
-				foreach (var row in values)
-				{
-					Console.WriteLine("{0} {1} | {2} | {3}", row[5], row[4], row[3], row[1]);
-				}
-			}
-			else Console.WriteLine("No data.");
-
-		}
-		public void CreateEntries(string name, string building, string cab, string message)
+		public void CreateEntries(string name, string building, string cab, string message,string ID)
 		{
 			
-			var range = $"{sheet}!A:D";
+			var range = $"{sheet}!A:E";
 			var valueRange = new ValueRange();
 
-			var objectList = new List<object>() { name,building,cab,message };
+			var objectList = new List<object>() { name,building,cab,message, ID};
 			valueRange.Values = new List<IList<object>> { objectList };
 
 			var appendRequest = service.Spreadsheets.Values.Append(valueRange, SpreadsheetId, range);
