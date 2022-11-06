@@ -1,23 +1,45 @@
-﻿using Google.Apis.Sheets.v4;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
 
 namespace TechSupportTechnoBot
 {
-	internal class GoogleHelper
+	internal class GoogleClass
 	{
-		private readonly string[] Scopes = { SheetsService.Scope.Spreadsheets };
-
-		static readonly string ApplicationName = "TechSupportTechnoBot";
-		static readonly string SpreadsheetId = "12WcDQ3_Gtxl18dK3Vfg83yEh2MleKjg8Jqq3facPNpo";
-		static readonly string sheet = "Tasks";
-		static SheetsService service;
-		public GoogleHelper(string token)
+		public static SheetsService ConnectToGoogle()
 		{
-			
+			// При изменении этих областей удалите ранее сохраненные учетные данные.
+			// в ~/.credentials/sheets.googleapis.com-dotnet-quickstart.json
+			string[] Scopes = { SheetsService.Scope.Spreadsheets };
+			string ApplicationName = "Excel to Google Sheet";
+
+			UserCredential credential;
+
+			using (var stream =
+				new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+			{
+				// Файл token.json хранит токены доступа и обновления пользователя и создается
+				// автоматически, когда поток авторизации завершается в первый раз.
+				string credPath = "token.json";
+				credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+					GoogleClientSecrets.FromStream(stream).Secrets,
+					Scopes,
+					"user",
+					CancellationToken.None,
+					new FileDataStore(credPath, true)).Result;
+				Console.WriteLine("Credential file saved to: " + credPath);
+			}
+
+			// Создать службу API Google Таблиц
+			var service = new SheetsService(new BaseClientService.Initializer()
+			{
+				HttpClientInitializer = credential,
+				ApplicationName = ApplicationName,
+			});
+
+			return service;
 		}
 	}
 }
+
