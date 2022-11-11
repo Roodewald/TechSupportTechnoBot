@@ -14,7 +14,7 @@ namespace TechSupportTechnoBot
 			1517971517, // Рязанов Станислав Павлович
 			970587775,  // Савченко Павел Петрович
 			825199836,  // Маша
-			461152825   // Кирилл Балабушко
+			461152825,  // Кирилл Балабушко
 		};
 		TelegramBotClient botClient = new TelegramBotClient("5522766988:AAEK8OThHKWoDc7A7ZBMFson5XjhMy__XDM");
 

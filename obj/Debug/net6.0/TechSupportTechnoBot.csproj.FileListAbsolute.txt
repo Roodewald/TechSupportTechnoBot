@@ -24,7 +24,6 @@ D:\MyCreatedProgramms\Visual C#\TechSupportTechnoBot\bin\Debug\net6.0\Google.Api
 D:\MyCreatedProgramms\Visual C#\TechSupportTechnoBot\bin\Debug\net6.0\client_secret.json
 C:\Users\Савченко Павел\Documents\UnityProjects\TechSupportTechnoBot\obj\Debug\net6.0\TechSupportTechnoBot.pdb
 C:\Users\Савченко Павел\Documents\UnityProjects\TechSupportTechnoBot\bin\Debug\net6.0\TechSupportTechnoBot.exe
-C:\Users\Савченко Павел\Documents\UnityProjects\TechSupportTechnoBot\bin\Debug\net6.0\client_secret.json
 C:\Users\Савченко Павел\Documents\UnityProjects\TechSupportTechnoBot\bin\Debug\net6.0\TechSupportTechnoBot.deps.json
 C:\Users\Савченко Павел\Documents\UnityProjects\TechSupportTechnoBot\bin\Debug\net6.0\TechSupportTechnoBot.runtimeconfig.json
 C:\Users\Савченко Павел\Documents\UnityProjects\TechSupportTechnoBot\bin\Debug\net6.0\TechSupportTechnoBot.dll
