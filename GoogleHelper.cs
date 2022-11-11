@@ -23,7 +23,7 @@ namespace TechSupportTechnoBot
 			using (var stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read))
 			{
 				credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-					GoogleClientSecrets.Load(stream).Secrets,
+					GoogleClientSecrets.FromStream(stream).Secrets,
 					new[] { SheetsService.Scope.Spreadsheets },
 					"MainUser", CancellationToken.None);
 			}
