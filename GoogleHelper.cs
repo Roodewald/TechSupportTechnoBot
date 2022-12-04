@@ -1,5 +1,6 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
+using System.IO;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 
@@ -11,6 +12,7 @@ namespace TechSupportTechnoBot
 	/// <summary>
 	internal class GoogleHelper
 	{
+		static readonly string[] Scopes = { SheetsService.Scope.Spreadsheets };
 		static readonly string SpreadsheetId = "12WcDQ3_Gtxl18dK3Vfg83yEh2MleKjg8Jqq3facPNpo";
 		static readonly string sheet = "Tasks";
 		private SheetsService service;
@@ -19,13 +21,11 @@ namespace TechSupportTechnoBot
 
 		public async Task Run()
 		{
-			UserCredential credential;
+			GoogleCredential credential;
 			using (var stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read))
 			{
-				credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-					GoogleClientSecrets.FromStream(stream).Secrets,
-					new[] { SheetsService.Scope.Spreadsheets },
-					"MainUser", CancellationToken.None);
+				credential = GoogleCredential.FromStream(stream)
+					.CreateScoped(Scopes);
 			}
 
 			// Create the service.
@@ -34,7 +34,7 @@ namespace TechSupportTechnoBot
 				HttpClientInitializer = credential,
 				ApplicationName = "TechSupportTechnoBot",
 			});
-			Console.WriteLine($"GoogleHelper запущен. {credential.UserId}");
+			Console.WriteLine($"GoogleHelper запущен.");
 		}
 		public void CreateEntries(string name, string building, string cab, string message,string ID)
 		{
@@ -42,7 +42,7 @@ namespace TechSupportTechnoBot
 			var range = $"{sheet}!A:G";
 			var valueRange = new ValueRange();
 
-			var objectList = new List<object>() { name,building,cab,message, ID, DateTime.Now.ToString("dd/MM/yy HH:mm"), "Заявка приянта" };
+			var objectList = new List<object>() { name,building,cab,message, ID, DateTime.Now.ToString("dd/MM/yy HH:mm"), "Заявка принята" };
 			Console.WriteLine($"Заявка {name} отправлена !");
 			valueRange.Values = new List<IList<object>> { objectList };
 

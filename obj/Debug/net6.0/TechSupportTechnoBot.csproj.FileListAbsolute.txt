@@ -21,7 +21,6 @@ D:\MyCreatedProgramms\Visual C#\TechSupportTechnoBot\bin\Debug\net6.0\Google.Api
 D:\MyCreatedProgramms\Visual C#\TechSupportTechnoBot\bin\Debug\net6.0\Google.Apis.Auth.dll
 D:\MyCreatedProgramms\Visual C#\TechSupportTechnoBot\bin\Debug\net6.0\Google.Apis.Core.dll
 D:\MyCreatedProgramms\Visual C#\TechSupportTechnoBot\bin\Debug\net6.0\Google.Apis.Sheets.v4.dll
-D:\MyCreatedProgramms\Visual C#\TechSupportTechnoBot\bin\Debug\net6.0\client_secret.json
 C:\Users\Савченко Павел\Documents\UnityProjects\TechSupportTechnoBot\obj\Debug\net6.0\TechSupportTechnoBot.pdb
 C:\Users\Савченко Павел\Documents\UnityProjects\TechSupportTechnoBot\bin\Debug\net6.0\TechSupportTechnoBot.exe
 C:\Users\Савченко Павел\Documents\UnityProjects\TechSupportTechnoBot\bin\Debug\net6.0\TechSupportTechnoBot.deps.json

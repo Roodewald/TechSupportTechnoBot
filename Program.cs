@@ -38,12 +38,15 @@ namespace TechSupportTechnoBot
 			{
 				AllowedUpdates = Array.Empty<UpdateType>() // receive all update types
 			};
-			botClient.StartReceiving(
-			updateHandler: HandleUpdateAsync,
-			pollingErrorHandler: HandlePollingErrorAsync,
-			receiverOptions: receiverOptions,
-			cancellationToken: cts.Token
-			);
+
+				botClient.StartReceiving(
+				updateHandler: HandleUpdateAsync,
+				pollingErrorHandler: HandlePollingErrorAsync,
+				receiverOptions: receiverOptions,
+				cancellationToken: cts.Token
+				);
+		
+
 
 			var me = await botClient.GetMeAsync();
 
@@ -119,6 +122,7 @@ namespace TechSupportTechnoBot
 					CallbackQuery callbackQuery = update.CallbackQuery;
 
 					dbase[ChekID(callbackQuery.From.Id), 1] = callbackQuery.Data;
+					Console.WriteLine(callbackQuery.Data);
 					await botClient.SendTextMessageAsync(callbackQuery.From.Id, "В каком кабинете требуется обслуживание?\nДля отправки используйте команду /cab\nПример: /cab 7");
 				}
 			}
@@ -138,7 +142,7 @@ namespace TechSupportTechnoBot
 				string createdUserData = $"В корпусе на {dbase[ID, 1]}\nВ кабинете: {dbase[ID, 2]} \nСообщение: {dbase[ID, 3]}";
 				string ueserMassage = $"Вы отправили запрос в ТехСлужбу!\n\n{createdUserData}\nМы сделаем все возможное чтобы помочь вам!\nДля отправки еще одного запроса напишите команду /start";
 				string sysAdminMassage = $"Пользователь {dbase[ID, 4]} \n{createdUserData}";
-				program.SendToSysAdmins(sysAdminMassage);
+				//program.SendToSysAdmins(sysAdminMassage);
 				googleHelper.CreateEntries(dbase[ID, 4], dbase[ID, 1], dbase[ID, 2], dbase[ID, 3], dbase[ID, 0]);
 
 				return ueserMassage;
@@ -170,7 +174,7 @@ namespace TechSupportTechnoBot
 						return i;
 					}
 				}
-				return dbase.GetLength(0)-1;
+				return dbase.GetLength(0) - 1;
 			}
 
 			Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
