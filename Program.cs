@@ -142,7 +142,7 @@ namespace TechSupportTechnoBot
 				string createdUserData = $"В корпусе на {dbase[ID, 1]}\nВ кабинете: {dbase[ID, 2]} \nСообщение: {dbase[ID, 3]}";
 				string ueserMassage = $"Вы отправили запрос в ТехСлужбу!\n\n{createdUserData}\nМы сделаем все возможное чтобы помочь вам!\nДля отправки еще одного запроса напишите команду /start";
 				string sysAdminMassage = $"Пользователь {dbase[ID, 4]} \n{createdUserData}";
-				//program.SendToSysAdmins(sysAdminMassage);
+				program.SendToSysAdmins(sysAdminMassage);
 				googleHelper.CreateEntries(dbase[ID, 4], dbase[ID, 1], dbase[ID, 2], dbase[ID, 3], dbase[ID, 0]);
 
 				return ueserMassage;
