@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "YXN5ds4x3HVxyoZn3R7oNQqVPtaV3Sx3C1Qb2iA4W9xqvLRbSTHWmF8J+qjhFdvXu/OL58mKDtPKCem/zRszOQ==",
+  "dgSpecHash": "MYXpBhf06Z3CN0v3VguYhFHeq73YEZ0V3pRk9tXxKrlET+XVfDfoyFnfC+WVKrmzMnB5XG+oNDyviTTLiZXyZw==",
   "success": true,
-  "projectFilePath": "D:\\MyCreatedProgramms\\Visual C#\\TechSupportTechnoBot\\TechSupportTechnoBot.csproj",
+  "projectFilePath": "C:\\Users\\Савченко Павел\\Documents\\UnityProjects\\TechSupportTechnoBot\\TechSupportTechnoBot.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\pavel\\.nuget\\packages\\google.apis\\1.57.0\\google.apis.1.57.0.nupkg.sha512",
-    "C:\\Users\\pavel\\.nuget\\packages\\google.apis.auth\\1.57.0\\google.apis.auth.1.57.0.nupkg.sha512",
-    "C:\\Users\\pavel\\.nuget\\packages\\google.apis.core\\1.57.0\\google.apis.core.1.57.0.nupkg.sha512",
-    "C:\\Users\\pavel\\.nuget\\packages\\google.apis.sheets.v4\\1.57.0.2826\\google.apis.sheets.v4.1.57.0.2826.nupkg.sha512",
-    "C:\\Users\\pavel\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
-    "C:\\Users\\pavel\\.nuget\\packages\\telegram.bot\\18.0.0\\telegram.bot.18.0.0.nupkg.sha512"
+    "C:\\Users\\Савченко Павел\\.nuget\\packages\\google.apis\\1.57.0\\google.apis.1.57.0.nupkg.sha512",
+    "C:\\Users\\Савченко Павел\\.nuget\\packages\\google.apis.auth\\1.57.0\\google.apis.auth.1.57.0.nupkg.sha512",
+    "C:\\Users\\Савченко Павел\\.nuget\\packages\\google.apis.core\\1.57.0\\google.apis.core.1.57.0.nupkg.sha512",
+    "C:\\Users\\Савченко Павел\\.nuget\\packages\\google.apis.sheets.v4\\1.57.0.2826\\google.apis.sheets.v4.1.57.0.2826.nupkg.sha512",
+    "C:\\Users\\Савченко Павел\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\Савченко Павел\\.nuget\\packages\\telegram.bot\\18.0.0\\telegram.bot.18.0.0.nupkg.sha512"
   ],
   "logs": []
 }

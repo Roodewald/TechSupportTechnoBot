@@ -5,7 +5,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
-//V1.0 Release date 11.11.22
+//V2.0 Switch OAth
 namespace TechSupportTechnoBot
 {
 	internal class Program
